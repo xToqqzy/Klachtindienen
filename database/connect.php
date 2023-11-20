@@ -1,8 +1,7 @@
 <?php
-
 $servername = "localhost";
-$username = "root"; // default XAMPP username
-$password = ""; // default XAMPP password (empty by default)
+$username = "root"; // Change this if your XAMPP username is different
+$password = ""; // Change this if your XAMPP password is different
 $dbname = "klachtindienen";
 
 // Create connection
@@ -12,5 +11,4 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 ?>
