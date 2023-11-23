@@ -11,8 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO klachten (klacht, latitude, longitude, submission_timestamp) VALUES ('$klacht', '$latitude', '$longitude', NOW())";
     $result = $conn->query($sql);
 
+
+
     if ($result) {
         echo "Complaint submitted successfully!";
+        header('Location: ../pages/dashboard.php');
     } else {
         echo "An error occurred while submitting the complaint.";
     }
