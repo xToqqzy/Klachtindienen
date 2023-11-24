@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="password">Wachtwoord:</label>
     <input type="password" name="password" required><br>
     <button type="submit">Registreer</button>
+    <p>Already have an account<a href="login.php">Login here</a>.</p>
+
 </form>
 </body>
 </html>

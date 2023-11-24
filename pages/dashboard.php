@@ -1,6 +1,21 @@
 <?php
-include('../database/connect.php'); // Connect to the database
-include('../include/navbar.php'); // Connect to the database
+include('../database/connect.php'); //  database connection
+include('../include/navbar.php'); //  nav bar
+
+// haal de info uit de database
+$query = "SELECT latitude, longitude, location_name FROM klachten"; // Vervang 'your_table_name' met de daadwerkelijke naam van je tabel
+$result = mysqli_query($conn, $query);
+
+//  een lege array om de locaties op te slaan
+$locations = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $locations[] = [
+        'lat' => $row['latitude'],
+        'lon' => $row['longitude'],
+        'name' => $row['location_name'],
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,26 +37,16 @@ include('../include/navbar.php'); // Connect to the database
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    // Hier voeg je JavaScript toe om de map en markers weer te geven.
+    var map = L.map('map').setView([51.9225, 4.47917], 12); // De coördinaten hier zijn voor roffa.
 
-    // Initieer de kaart op een bepaald element met een specifieke locatie en zoomniveau.
-    var map = L.map('map').setView([51.9225, 4.47917], 12); // De coördinaten hier zijn voor Rotterdam.
 
-    // Voeg de OpenStreetMap-laag toe aan de kaart.
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Hier zou je een AJAX-verzoek kunnen doen om de locatiegegevens op te halen.
-    // Vervang dit met de daadwerkelijke gegevens die je van de server hebt ontvangen.
-    var locations = [
-        { lat: 51.9225, lon: 4.47917, name: "Marker 1" },
-        { lat: 51.9125, lon: 4.46917, name: "Marker 2" },
-        { lat: 51.9125, lon: 4.56977, name: "Marker 3" },
-        // Voeg meer locaties toe zoals nodig
-    ];
+   // hier haalt die de gegevens uit
+    var locations = <?php echo json_encode($locations); ?>;
 
-    // Itereer over de locaties en voeg markers toe aan de kaart.
     locations.forEach(function(location) {
         var marker = L.marker([location.lat, location.lon]).addTo(map);
         marker.bindPopup(location.name);

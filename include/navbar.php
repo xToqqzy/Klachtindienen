@@ -33,9 +33,14 @@ $user = mysqli_fetch_assoc($result);
         <a href="../pages/submit_klacht.php">Klacht Indienen</a>
         <a href="../pages/login.php">inloggen</a>
         <a href="../pages/register.php">register</a>
+        <a href="../pages/accountdashboard.php">mijn account</a>
     </nav>
     <div id="welcome">Welkom, <?php echo $user['email']; ?>! | <a href="../pages/logout.php">Uitloggen</a></div>
-
+<style>
+    #welcome{
+        color: #ff0101;
+    }
+</style>
 
 </div>
 

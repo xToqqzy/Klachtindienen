@@ -1,6 +1,6 @@
 <?php
-session_start();
 include('../database/connect.php');
+include('../include/navbar.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -43,7 +43,10 @@ $user = mysqli_fetch_assoc($result);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/klachtindienen.css">
+    <link rel="stylesheet" href="../css/homepage.css">
+
     <title>Dashboard</title>
     <style>
         body {
@@ -56,8 +59,8 @@ $user = mysqli_fetch_assoc($result);
     </style>
 </head>
 <body>
-<div id="welcome">Welkom, <?php echo $user['email']; ?>! | <a href="logout.php">Uitloggen</a></div>
-<h1>Welkom op het dashboard</h1>
+<h1>Mijn account</h1>
+
 
 <h2>Accountgegevens</h2>
 <p>E-mail: <?php echo $user['email']; ?></p>
