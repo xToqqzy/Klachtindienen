@@ -1,6 +1,6 @@
 <?php
 include('../database/connect.php'); // Connect to the database
-include('../include/navbar.html'); // Connect to the database
+include('../include/navbar.php'); // Connect to the database
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,3 +32,5 @@ include('../include/navbar.html'); // Connect to the database
 
 </body>
 </html>
+
+
