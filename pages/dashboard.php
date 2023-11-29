@@ -1,6 +1,21 @@
 <?php
-include('../database/connect.php'); // Connect to the database
-include('../include/navbar.html'); // Connect to the database
+include('../database/connect.php'); //  database connection
+include('../include/navbar.php'); //  nav bar
+
+// haal de info uit de database
+$query = "SELECT latitude, longitude, location_name FROM klachten"; // Vervang 'your_table_name' met de daadwerkelijke naam van je tabel
+$result = mysqli_query($conn, $query);
+
+//  een lege array om de locaties op te slaan
+$locations = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $locations[] = [
+        'lat' => $row['latitude'],
+        'lon' => $row['longitude'],
+        'name' => $row['location_name'],
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,39 +27,31 @@ include('../include/navbar.html'); // Connect to the database
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complaints Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 
-<h1>Complaints Dashboard</h1>
+<h1>Klachten omgeving gemeente Rotterdam:</h1>
 
-<div id="map" style="height: 500px;"></div>
+<div id="map" style="height: 400px;"></div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 0, lng: 0},
-            zoom: 2
-        });
+    var map = L.map('map').setView([51.9225, 4.47917], 12); // De coördinaten hier zijn voor roffa.
 
-        // Fetch complaints data from the server
-        fetch('get_complaints.php')
-            .then(response => response.json())
-            .then(data => {
-                // Loop through the complaints and add markers to the map
-                data.forEach(complaint => {
-                    var marker = new google.maps.Marker({
-                        position: {lat: parseFloat(complaint.latitude), lng: parseFloat(complaint.longitude)},
-                        map: map,
-                        title: 'Complaint Location'
-                    });
-                });
-            })
-            .catch(error => console.error('Error fetching complaints:', error));
-    }
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+   // hier haalt die de gegevens uit
+    var locations = <?php echo json_encode($locations); ?>;
+
+    locations.forEach(function(location) {
+        var marker = L.marker([location.lat, location.lon]).addTo(map);
+        marker.bindPopup(location.name);
+    });
 </script>
-
-<!-- Include the Google Maps API script (replace YOUR_API_KEY with your actual API key) -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
 
 </body>
 </html>
